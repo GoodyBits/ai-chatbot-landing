@@ -4,55 +4,91 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AI ChatBot SaaS for SMEs</title>
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
-    /* General Styles */
+    /* Base Styles */
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
       margin: 0;
       padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    /* Bright mode */
+    body.bright {
+      background: #f4f4f4;
+      color: #333;
+    }
+    /* Night mode */
+    body.night {
+      background: #222;
+      color: #ddd;
     }
     .container {
       max-width: 800px;
-      margin: 80px auto;
-      background: #fff;
+      margin: 100px auto 50px auto;
+      background: inherit;
       padding: 40px;
       text-align: center;
+      border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    h1 {
-      color: #333;
-      margin-bottom: 20px;
-    }
-    p {
-      color: #666;
-      font-size: 18px;
-      line-height: 1.5;
-    }
-    button {
-      padding: 15px 25px;
-      font-size: 16px;
-      border: none;
+    h1.welcome {
       background: #007BFF;
       color: #fff;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-top: 20px;
+      padding: 20px;
+      border-radius: 12px;
+      display: inline-block;
     }
-    button:hover {
-      background: #0056b3;
+    /* Navigation Bar */
+    .navbar {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: rgba(0, 123, 255, 0.9);
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      z-index: 1000;
+    }
+    .navbar button {
+      background: transparent;
+      border: 1px solid #fff;
+      color: #fff;
+      padding: 8px 12px;
+      margin-left: 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .navbar button:hover {
+      background: #fff;
+      color: #007BFF;
+    }
+    /* Sections */
+    section {
+      margin: 40px 0;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    section:hover {
+      background: rgba(0,123,255,0.1);
     }
     /* Modal Styles */
     .modal {
-      display: none; /* Hidden by default */
-      position: fixed; /* Stay in place */
-      z-index: 1000; /* Sit on top */
+      display: none; 
+      position: fixed; 
+      z-index: 2000; 
       left: 0;
       top: 0;
-      width: 100%; /* Full width */
-      height: 100%; /* Full height */
+      width: 100%;
+      height: 100%;
       overflow: auto;
-      background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+      background-color: rgba(0,0,0,0.5);
     }
     .modal-content {
       background-color: #fff;
@@ -63,81 +99,180 @@
       max-width: 400px;
       border-radius: 8px;
       text-align: center;
+      position: relative;
     }
     .close {
       color: #aaa;
-      float: right;
+      position: absolute;
+      right: 15px;
+      top: 10px;
       font-size: 28px;
       font-weight: bold;
       cursor: pointer;
     }
-    .close:hover,
-    .close:focus {
-      color: black;
+    .close:hover {
+      color: #000;
     }
     .signup-options button {
       width: 100%;
+      padding: 12px;
       margin: 10px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .google-btn {
+      background: #db4437;
+      color: #fff;
+    }
+    .email-btn {
+      background: #007BFF;
+      color: #fff;
     }
   </style>
 </head>
-<body>
-  <div class="container">
-    <h1>Welcome to AI ChatBot SaaS</h1>
-    <p>
-      Revolutionize your customer support with our AI-powered chatbot solution for SMEs.
-      Enjoy 24/7 assistance, cost savings, and seamless integration with your existing systems.
-    </p>
-    <button id="signupBtn">Sign Up Now</button>
+<body class="bright">
+  <!-- Navigation Bar -->
+  <div class="navbar">
+    <div class="logo"><strong>AI ChatBot SaaS</strong></div>
+    <div>
+      <button id="themeToggle">Toggle Theme</button>
+      <button id="navSignIn">Sign In</button>
+    </div>
   </div>
 
-  <!-- Modal Structure -->
-  <div id="signupModal" class="modal">
+  <!-- Main Content Container -->
+  <div class="container">
+    <h1 class="welcome">Welcome to AI ChatBot SaaS</h1>
+    <p>Transform your customer support with our AI-powered solution designed specifically for SMEs.</p>
+    <p>Click on any section below to learn more. (Note: You must sign in to view details.)</p>
+    
+    <section id="description">Description</section>
+    <section id="why">Why People Use This Page</section>
+    <section id="reviews">Reviews</section>
+    <section id="feedback">Feedback</section>
+  </div>
+
+  <!-- Modal for Sign In -->
+  <div id="loginModal" class="modal">
     <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>Sign Up</h2>
-      <p>Choose your preferred method to sign up:</p>
+      <span class="close" id="modalClose">&times;</span>
+      <h2>Sign In to Continue</h2>
       <div class="signup-options">
-        <button id="googleSignUp">Sign Up with Google</button>
-        <button id="emailSignUp">Sign Up with Email</button>
+        <!-- Google Sign In Button will render here -->
+        <div id="g_id_onload"
+             data-client_id="460009435024-l8kr8i1tla1nodv8if5ep0bom3gpep8t.apps.googleusercontent.com"
+             data-context="signin"
+             data-ux_mode="popup"
+             data-callback="handleCredentialResponse"
+             data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin" 
+             data-type="standard"
+             data-shape="rectangular"
+             data-theme="outline"
+             data-text="signin_with"
+             data-size="large"
+             data-logo_alignment="left">
+        </div>
+        <button class="email-btn" id="emailSignIn">Sign In with Email</button>
       </div>
     </div>
   </div>
 
+  <!-- Optional Email Sign In Page Redirection -->
+  <!-- In a real app, you'd have a separate sign-up/login flow. For this demo, we'll simulate sign-in. -->
+
   <script>
-    // Get modal element
-    var modal = document.getElementById("signupModal");
-    var btn = document.getElementById("signupBtn");
-    var span = document.getElementsByClassName("close")[0];
+    // Global authentication flag
+    let isAuthenticated = false;
 
-    // Open modal when Sign Up Now button is clicked
-    btn.onclick = function() {
+    // Theme Toggle Functionality
+    const themeToggle = document.getElementById("themeToggle");
+    themeToggle.addEventListener("click", () => {
+      const body = document.body;
+      if (body.classList.contains("bright")) {
+        body.classList.remove("bright");
+        body.classList.add("night");
+      } else {
+        body.classList.remove("night");
+        body.classList.add("bright");
+      }
+    });
+
+    // Elements that require authentication
+    const protectedSections = document.querySelectorAll("section");
+    protectedSections.forEach(section => {
+      section.addEventListener("click", (e) => {
+        if (!isAuthenticated) {
+          e.preventDefault();
+          showModal();
+        } else {
+          // In a real app, redirect to a page with details.
+          alert("Displaying " + section.id + " content for authenticated users.");
+        }
+      });
+    });
+
+    // Show the login modal
+    const modal = document.getElementById("loginModal");
+    const navSignIn = document.getElementById("navSignIn");
+    navSignIn.addEventListener("click", showModal);
+    function showModal() {
       modal.style.display = "block";
-    };
-
-    // Close modal when X is clicked
-    span.onclick = function() {
+    }
+    // Close modal functionality
+    const modalClose = document.getElementById("modalClose");
+    modalClose.onclick = function() {
       modal.style.display = "none";
-    };
-
-    // Close modal if user clicks outside modal content
+    }
     window.onclick = function(event) {
       if (event.target == modal) {
         modal.style.display = "none";
       }
     };
 
-    // Dummy actions for sign up buttons:
-    document.getElementById("googleSignUp").onclick = function() {
-      // Redirect to Google OAuth sign-in (placeholder link)
-      window.location.href = "https://accounts.google.com/o/oauth2/auth?dummy_params";
+    // Email Sign In (simulate)
+    document.getElementById("emailSignIn").onclick = function() {
+      // In a real application, redirect to an email login/signup page.
+      alert("Redirecting to email sign in page...");
+      // For demo, we mark user as authenticated.
+      isAuthenticated = true;
+      modal.style.display = "none";
+      updateNav();
     };
 
-    document.getElementById("emailSignUp").onclick = function() {
-      // Redirect to a sign up page for email registration
-      window.location.href = "signup.html";
-    };
+    // Google OAuth Callback
+    function handleCredentialResponse(response) {
+      // For demo, simply mark the user as authenticated.
+      console.log("Encoded JWT ID token: " + response.credential);
+      // In a production app, verify the token on the backend.
+      isAuthenticated = true;
+      modal.style.display = "none";
+      updateNav();
+      alert("Signed in successfully with Google!");
+    }
+
+    // Update navigation after sign in
+    function updateNav() {
+      if (isAuthenticated) {
+        navSignIn.textContent = "Account";
+      }
+    }
+  </script>
+
+  <!-- Additional Sections: Feedback, etc. -->
+  <script>
+    // Redirect feedback section to your Google Form when clicked (if not authenticated, force login first)
+    document.getElementById("feedback").addEventListener("click", function(e) {
+      if (!isAuthenticated) {
+        e.preventDefault();
+        showModal();
+      } else {
+        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLScuDoVXTFOf8s8FxTqFE19zrJGqY2ClKsgjR9C5PwYlXOLtuQ/viewform?usp=header";
+      }
+    });
   </script>
 </body>
 </html>
-
