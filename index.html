@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AI ChatBot SaaS for SMEs</title>
   <style>
+    /* General Styles */
     body {
       font-family: Arial, sans-serif;
       background: #f4f4f4;
@@ -13,7 +14,7 @@
     }
     .container {
       max-width: 800px;
-      margin: 50px auto;
+      margin: 80px auto;
       background: #fff;
       padding: 40px;
       text-align: center;
@@ -28,29 +29,55 @@
       font-size: 18px;
       line-height: 1.5;
     }
-    .cta {
-      margin-top: 30px;
-    }
-    input[type="email"] {
-      padding: 12px;
-      width: 70%;
-      max-width: 300px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      margin-right: 10px;
-      font-size: 16px;
-    }
     button {
-      padding: 12px 20px;
+      padding: 15px 25px;
+      font-size: 16px;
       border: none;
       background: #007BFF;
       color: #fff;
-      font-size: 16px;
       border-radius: 4px;
       cursor: pointer;
+      margin-top: 20px;
     }
     button:hover {
       background: #0056b3;
+    }
+    /* Modal Styles */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1000; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 30px;
+      border: 1px solid #888;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover,
+    .close:focus {
+      color: black;
+    }
+    .signup-options button {
+      width: 100%;
+      margin: 10px 0;
     }
   </style>
 </head>
@@ -58,16 +85,59 @@
   <div class="container">
     <h1>Welcome to AI ChatBot SaaS</h1>
     <p>
-      Transform your customer support with our cutting-edge AI chatbot designed specifically for SMEs.
-      Enjoy 24/7 assistance, reduced operational costs, and seamless integration with your existing systems.
+      Revolutionize your customer support with our AI-powered chatbot solution for SMEs.
+      Enjoy 24/7 assistance, cost savings, and seamless integration with your existing systems.
     </p>
-    <div class="cta">
-      <p>Sign up now to get early access and exclusive updates!</p>
-      <form action="https://example.com/subscribe" method="POST">
-        <input type="email" name="email" placeholder="Enter your email" required>
-        <button type="submit">Sign Up</button>
-      </form>
+    <button id="signupBtn">Sign Up Now</button>
+  </div>
+
+  <!-- Modal Structure -->
+  <div id="signupModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Sign Up</h2>
+      <p>Choose your preferred method to sign up:</p>
+      <div class="signup-options">
+        <button id="googleSignUp">Sign Up with Google</button>
+        <button id="emailSignUp">Sign Up with Email</button>
+      </div>
     </div>
   </div>
+
+  <script>
+    // Get modal element
+    var modal = document.getElementById("signupModal");
+    var btn = document.getElementById("signupBtn");
+    var span = document.getElementsByClassName("close")[0];
+
+    // Open modal when Sign Up Now button is clicked
+    btn.onclick = function() {
+      modal.style.display = "block";
+    };
+
+    // Close modal when X is clicked
+    span.onclick = function() {
+      modal.style.display = "none";
+    };
+
+    // Close modal if user clicks outside modal content
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+
+    // Dummy actions for sign up buttons:
+    document.getElementById("googleSignUp").onclick = function() {
+      // Redirect to Google OAuth sign-in (placeholder link)
+      window.location.href = "https://accounts.google.com/o/oauth2/auth?dummy_params";
+    };
+
+    document.getElementById("emailSignUp").onclick = function() {
+      // Redirect to a sign up page for email registration
+      window.location.href = "signup.html";
+    };
+  </script>
 </body>
 </html>
+
